@@ -1,0 +1,31 @@
+name: Release
+
+# Go modules are published by the tag itself: pkg.go.dev and the Go proxy pick up
+# vX.Y.Z on first request. This workflow re-runs the gates and creates the GitHub release.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+      - run: go vet ./...
+      - run: go test -race -coverprofile=cover.out .
+      - name: Coverage gate (100%)
+        run: |
+          total=$(go tool cover -func=cover.out | awk '/^total:/ {print $3}')
+          [ "$total" = "100.0%" ] || { echo "coverage $total"; exit 1; }
+      - name: Warm the Go proxy
+        run: GOPROXY=https://proxy.golang.org GO111MODULE=on go list -m "github.com/lakshyapocketlab/hello-go@${GITHUB_REF_NAME}"
+      - name: GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" --generate-notes --title "$GITHUB_REF_NAME"
