@@ -273,7 +273,15 @@ Runnable programs live in [`examples/`](examples). Each one reads `HELLO_API_KEY
 | [`error-handling`](examples/error-handling/main.go) | Branch on `IsAuthentication`, `IsRateLimit`, `IsNotFound` and `APIError` | `go run ./examples/error-handling <phone_number_id> <to> "Hello"` |
 | [`list-templates`](examples/list-templates/main.go) | List approved templates across all pages | `go run ./examples/list-templates <waba_id>` |
 
-More examples: [hello-examples](https://github.com/lakshyapocketlab/hello-examples).
+### More examples
+
+The [hello-examples](https://github.com/lakshyapocketlab/hello-examples) repository has more runnable programs:
+
+- [`message-types/go`](https://github.com/lakshyapocketlab/hello-examples/tree/main/message-types/go): one example per message type (media, location, interactive, templates, ...) with delivery tracking
+- [`smoke-test/go`](https://github.com/lakshyapocketlab/hello-examples/tree/main/smoke-test/go): a live smoke test of this SDK against the real API
+- [`webhooks`](https://github.com/lakshyapocketlab/hello-examples/tree/main/webhooks): receive and verify webhooks
+- [`n8n`](https://github.com/lakshyapocketlab/hello-examples/tree/main/n8n): send messages from n8n workflows
+- [`ai-agents`](https://github.com/lakshyapocketlab/hello-examples/tree/main/ai-agents): connect AI agents over MCP
 
 ## API reference
 
