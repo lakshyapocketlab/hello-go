@@ -22,7 +22,7 @@ import (
 )
 
 // Version is the SDK version, sent in the User-Agent header.
-const Version = "0.1.1"
+const Version = "1.0.0"
 
 const (
 	// DefaultBaseURL is the public Hello API host.
@@ -45,7 +45,6 @@ var ErrMissingAPIKey = errors.New("hello: API key is required: use WithAPIKey or
 type Client struct {
 	apiKey     string
 	baseURL    string
-	baseURLSet bool
 	httpClient *http.Client
 	maxRetries int
 

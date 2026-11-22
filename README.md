@@ -18,7 +18,7 @@ Standard library only, Go 1.22+, `context.Context` on every call, 100% test cove
 go get github.com/lakshyapocketlab/hello-go
 ```
 
-**2. Get an API key.** Create one (`hello_live_...`) on the API Keys page of the [Hello dashboard](https://hello.lakshyapocketlab.com), then export it:
+**2. Get an API key.** Create one (`hello_live_...`) in the [Hello dashboard](https://hello.lakshyapocketlab.com) under **Integrations**, then export it:
 
 ```sh
 export HELLO_API_KEY=hello_live_...

@@ -4,7 +4,9 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/).
 
-## [0.1.1] - 2026-11-22
+## [1.0.0] - 2026-11-22
+
+First stable release. The public API follows semantic versioning from here on: breaking changes only in a new major version.
 
 ### Fixed
 
@@ -25,5 +27,5 @@ All notable changes to this project are documented here. The format follows
 - Retries with exponential backoff, jitter and `Retry-After` support; sends are retried only with an idempotency key.
 - Runnable examples: `send-text`, `send-template`, `upload-and-send-media`.
 
-[0.1.1]: https://github.com/lakshyapocketlab/hello-go/releases/tag/v0.1.1
+[1.0.0]: https://github.com/lakshyapocketlab/hello-go/releases/tag/v1.0.0
 [0.1.0]: https://github.com/lakshyapocketlab/hello-go/releases/tag/v0.1.0
