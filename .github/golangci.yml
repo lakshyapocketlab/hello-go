@@ -1,0 +1,21 @@
+version: "2"
+
+linters:
+  default: standard
+  settings:
+    errcheck:
+      # Deferred/cleanup Close errors are intentionally ignored throughout the SDK.
+      exclude-functions:
+        - (io.Closer).Close
+        - (io.ReadCloser).Close
+        - (*os.File).Close
+        - (net.Conn).Close
+        - fmt.Fprint
+        - fmt.Fprintf
+        - fmt.Fprintln
+        - (net/http.ResponseWriter).Write
+  exclusions:
+    rules:
+      # TODO(maintainers): remove the unused Client.baseURLSet field, then drop this rule.
+      - linters: [unused]
+        text: "field baseURLSet is unused"
