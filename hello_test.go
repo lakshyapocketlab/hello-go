@@ -132,6 +132,9 @@ func TestNewClientOptions(t *testing.T) {
 	if _, err = NewClient(WithAPIKey("k")); err == nil || !strings.Contains(err.Error(), "invalid base URL") {
 		t.Fatalf("invalid env base URL: err = %v", err)
 	}
+	if c, err = NewClient(WithAPIKey("k"), WithBaseURL("https://explicit.example.com")); err != nil || c.baseURL != "https://explicit.example.com" {
+		t.Fatalf("explicit WithBaseURL must ignore an invalid env value: %v %v", c, err)
+	}
 	t.Setenv(BaseURLEnvVar, "")
 
 	custom := &http.Client{Timeout: 5 * time.Second}

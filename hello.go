@@ -45,6 +45,7 @@ var ErrMissingAPIKey = errors.New("hello: API key is required: use WithAPIKey or
 type Client struct {
 	apiKey     string
 	baseURL    string
+	baseURLSet bool
 	httpClient *http.Client
 	maxRetries int
 
@@ -67,6 +68,7 @@ type Client struct {
 type config struct {
 	apiKey     string
 	baseURL    string
+	baseURLSet bool
 	httpClient *http.Client
 	timeout    time.Duration
 	timeoutSet bool
@@ -93,6 +95,7 @@ func WithBaseURL(baseURL string) Option {
 			return
 		}
 		c.baseURL = strings.TrimRight(baseURL, "/")
+		c.baseURLSet = true
 	}
 }
 
@@ -118,11 +121,12 @@ func WithMaxRetries(n int) Option {
 // NewClient builds a Client. It fails with ErrMissingAPIKey when no key is set.
 func NewClient(opts ...Option) (*Client, error) {
 	cfg := &config{baseURL: DefaultBaseURL, timeout: defaultTimeout, maxRetries: defaultMaxRetries}
-	if env := strings.TrimSpace(os.Getenv(BaseURLEnvVar)); env != "" {
-		WithBaseURL(env)(cfg)
-	}
 	for _, o := range opts {
 		o(cfg)
+	}
+	// The env var applies only when WithBaseURL was not given, so an explicit option always wins.
+	if env := strings.TrimSpace(os.Getenv(BaseURLEnvVar)); env != "" && !cfg.baseURLSet {
+		WithBaseURL(env)(cfg)
 	}
 	if cfg.err != nil {
 		return nil, cfg.err
