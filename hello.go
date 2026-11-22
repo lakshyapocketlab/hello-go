@@ -22,13 +22,16 @@ import (
 )
 
 // Version is the SDK version, sent in the User-Agent header.
-const Version = "0.1.0"
+const Version = "0.1.1"
 
 const (
 	// DefaultBaseURL is the public Hello API host.
-	DefaultBaseURL = "https://api.lakshyapocketlab.com"
+	DefaultBaseURL = "https://helloapi.lakshyapocketlab.com"
 	// APIKeyEnvVar is the environment variable read when no API key option is given.
 	APIKeyEnvVar = "HELLO_API_KEY"
+	// BaseURLEnvVar is the environment variable that overrides the API host when
+	// WithBaseURL is not given.
+	BaseURLEnvVar = "HELLO_BASE_URL"
 
 	defaultTimeout    = 60 * time.Second
 	defaultMaxRetries = 2
@@ -80,7 +83,8 @@ func WithAPIKey(key string) Option {
 	return func(c *config) { c.apiKey = key }
 }
 
-// WithBaseURL overrides the API host, for staging or self-hosting.
+// WithBaseURL overrides the API host, for staging or self-hosting. It takes
+// precedence over the HELLO_BASE_URL environment variable.
 func WithBaseURL(baseURL string) Option {
 	return func(c *config) {
 		u, err := url.Parse(baseURL)
@@ -114,6 +118,9 @@ func WithMaxRetries(n int) Option {
 // NewClient builds a Client. It fails with ErrMissingAPIKey when no key is set.
 func NewClient(opts ...Option) (*Client, error) {
 	cfg := &config{baseURL: DefaultBaseURL, timeout: defaultTimeout, maxRetries: defaultMaxRetries}
+	if env := strings.TrimSpace(os.Getenv(BaseURLEnvVar)); env != "" {
+		WithBaseURL(env)(cfg)
+	}
 	for _, o := range opts {
 		o(cfg)
 	}

@@ -119,6 +119,21 @@ func TestNewClientOptions(t *testing.T) {
 		t.Fatal("explicit key must win over env")
 	}
 
+	t.Setenv(BaseURLEnvVar, "https://staging.example.com/")
+	c, err = NewClient(WithAPIKey("k"))
+	if err != nil || c.baseURL != "https://staging.example.com" {
+		t.Fatalf("env base URL: %v %v", c, err)
+	}
+	c, err = NewClient(WithAPIKey("k"), WithBaseURL("https://other.example.com"))
+	if err != nil || c.baseURL != "https://other.example.com" {
+		t.Fatalf("WithBaseURL must win over env: %v %v", c, err)
+	}
+	t.Setenv(BaseURLEnvVar, "ftp://bad")
+	if _, err = NewClient(WithAPIKey("k")); err == nil || !strings.Contains(err.Error(), "invalid base URL") {
+		t.Fatalf("invalid env base URL: err = %v", err)
+	}
+	t.Setenv(BaseURLEnvVar, "")
+
 	custom := &http.Client{Timeout: 5 * time.Second}
 	c, _ = NewClient(WithHTTPClient(custom))
 	if c.httpClient != custom {

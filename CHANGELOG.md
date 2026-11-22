@@ -4,6 +4,17 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/).
 
+## [0.1.1] - 2026-11-22
+
+### Fixed
+
+- The default API host is now `https://helloapi.lakshyapocketlab.com` (was `api.lakshyapocketlab.com`).
+
+### Added
+
+- `HELLO_BASE_URL` environment variable (`hello.BaseURLEnvVar`) to override the API host; `WithBaseURL` takes precedence.
+- README shows `hello.WithAPIKey` first, with `HELLO_API_KEY` as the fallback.
+
 ## [0.1.0] - 2026-11-21
 
 ### Added
@@ -14,4 +25,5 @@ All notable changes to this project are documented here. The format follows
 - Retries with exponential backoff, jitter and `Retry-After` support; sends are retried only with an idempotency key.
 - Runnable examples: `send-text`, `send-template`, `upload-and-send-media`.
 
+[0.1.1]: https://github.com/lakshyapocketlab/hello-go/releases/tag/v0.1.1
 [0.1.0]: https://github.com/lakshyapocketlab/hello-go/releases/tag/v0.1.0

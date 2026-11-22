@@ -4,7 +4,9 @@ Official Go SDK for Hello, the WhatsApp Business API. Send messages, templates a
 
 [![CI](https://github.com/lakshyapocketlab/hello-go/actions/workflows/ci.yml/badge.svg)](https://github.com/lakshyapocketlab/hello-go/actions/workflows/ci.yml)
 [![Go Reference](https://pkg.go.dev/badge/github.com/lakshyapocketlab/hello-go.svg)](https://pkg.go.dev/github.com/lakshyapocketlab/hello-go)
+[![Go Report Card](https://goreportcard.com/badge/github.com/lakshyapocketlab/hello-go)](https://goreportcard.com/report/github.com/lakshyapocketlab/hello-go)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Latest tag](https://img.shields.io/github/v/tag/lakshyapocketlab/hello-go)](https://github.com/lakshyapocketlab/hello-go/tags)
 
 Standard library only, Go 1.22+, `context.Context` on every call, 100% test coverage.
 
@@ -28,8 +30,9 @@ import (
 )
 
 func main() {
-	// Reads HELLO_API_KEY (hello_live_...) unless hello.WithAPIKey is given.
-	client, err := hello.NewClient()
+	// Pass the API key (hello_live_...) explicitly; without WithAPIKey the
+	// client falls back to the HELLO_API_KEY environment variable.
+	client, err := hello.NewClient(hello.WithAPIKey("hello_live_..."))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -55,7 +58,7 @@ Runnable programs are in [`examples/`](examples): `send-text`, `send-template`, 
 ```go
 client, err := hello.NewClient(
 	hello.WithAPIKey("hello_live_..."),            // default: env HELLO_API_KEY; error if empty
-	hello.WithBaseURL("https://api.lakshyapocketlab.com"), // default; override for staging/self-host
+	hello.WithBaseURL("https://helloapi.lakshyapocketlab.com"), // default; override for staging/self-host
 	hello.WithHTTPClient(&http.Client{}),          // custom transport, proxy, tracing
 	hello.WithTimeout(30*time.Second),             // per attempt, default 60s, 0 = none
 	hello.WithMaxRetries(2),                       // default 2
@@ -63,7 +66,7 @@ client, err := hello.NewClient(
 ```
 
 Requests carry `Authorization: Bearer <key>` and `User-Agent: hello-go/<version>`.
-Path parameters are URL-escaped. A missing key returns `hello.ErrMissingAPIKey`.
+Set `HELLO_BASE_URL` to change the API host without code (`WithBaseURL` takes precedence). Path parameters are URL-escaped. A missing key returns `hello.ErrMissingAPIKey`.
 
 ## Methods
 
