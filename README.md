@@ -28,15 +28,12 @@ export HELLO_API_KEY=hello_live_...
 
 ```go
 package main
-
 import (
 	"context"
 	"fmt"
 	"log"
-
 	hello "github.com/lakshyapocketlab/hello-go"
 )
-
 func main() {
 	client, err := hello.NewClient() // reads HELLO_API_KEY
 	if err != nil { log.Fatal(err) }
